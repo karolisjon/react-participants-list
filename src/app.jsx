@@ -1,14 +1,12 @@
 import React from 'react';
+import CustomContainer from './components/custom-container';
+import ParticipantsTable from './components/participants-table';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <a>
-          test
-        </a>
-      </header>
-    </div>
+    <CustomContainer>
+      <ParticipantsTable />
+    </CustomContainer>
   );
 }
 
