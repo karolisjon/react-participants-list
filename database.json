@@ -1,0 +1,12 @@
+{
+  "participants": [
+    {
+      "id": 1,
+      "fullname": "Baby Jesus",
+      "Gender": "male",
+      "email": "baby@jesus.com",
+      "phone": "+37063642678",
+      "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur, labore, sapiente veniam quod libero quasi earum iste nulla, inventore harum aliquid ullam nostrum!"
+    }
+  ]
+}

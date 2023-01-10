@@ -20,6 +20,8 @@ const tableColumns = [
 ];
 
 const ParticipantsTable = () => {
+
+  
   return (
     <TableContainer>
       <Table>
