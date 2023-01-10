@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -20,8 +20,14 @@ const tableColumns = [
 ];
 
 const ParticipantsTable = () => {
+  const [participants, setParticipants] = useState([]);
 
-  
+  useEffect(() => {
+    fetch('http://localhost:3004/participants')
+      .then(response => response.json())
+      .then(participant => setParticipants(participant));
+  }, []);
+
   return (
     <TableContainer>
       <Table>
@@ -35,47 +41,31 @@ const ParticipantsTable = () => {
         </TableHead>
 
         <TableBody>
-          <TableRow>
-            <TableCell>baby jesus</TableCell>
-            <TableCell align="left">male</TableCell>
-            <TableCell align="left">baby@jesus.com</TableCell>
-            <TableCell align="left">+370 63642 678</TableCell>
-            <TableCell align="left" sx={{ width: '30%' }}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur, labore, sapiente veniam quod libero quasi earum iste nulla, inventore harum aliquid ullam nostrum! Consequuntur facere iste qui quae ab aut.Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur, labore, sapiente veniam quod libero quasi earum iste nulla, inventore harum aliquid ullam nostrum! Consequuntur facere iste qui quae ab aut.</TableCell>
-            <TableCell align="left">
-              <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <Button variant='contained' color='warning'>Edit</Button>
-                <Button variant='contained' color='error'>Delete</Button>
-              </Box>
-            </TableCell>
-          </TableRow>
+          {
+            participants.map(({
+              id, 
+              fullname, 
+              gender, 
+              email, 
+              phone, 
+              description
+            }) => (
+              <TableRow key={id}>
+                <TableCell>{fullname}</TableCell>
+                <TableCell align="left">{gender}</TableCell>
+                <TableCell align="left">{email}</TableCell>
+                <TableCell align="left">{phone}</TableCell>
+                <TableCell align="left" sx={{ width: '30%' }}>{description}</TableCell>
+                <TableCell align="left">
+                  <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                    <Button variant='contained' color='warning'>Edit</Button>
+                    <Button variant='contained' color='error'>Delete</Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))
+          }
 
-          <TableRow>
-            <TableCell>james bond</TableCell>
-            <TableCell align="left">male</TableCell>
-            <TableCell align="left">james@bond.com</TableCell>
-            <TableCell align="left">+370 65542 678</TableCell>
-            <TableCell align="left" sx={{ width: '30%' }}>labore, sapiente veniam quod libero quasi earum iste nulla, inventore harum aliquid ullam nostrum! Consequuntur facere iste qui quae ab aut.Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur, labore, sapiente veniam quod libero quasi earum iste nulla, inventore harum aliquid ullam nostrum! Consequuntur facere iste qui quae ab aut.`</TableCell>
-            <TableCell align="left">
-              <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <Button variant='contained' color='warning'>Edit</Button>
-                <Button variant='contained' color='error'>Delete</Button>
-              </Box>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell>james bond</TableCell>
-            <TableCell align="left">male</TableCell>
-            <TableCell align="left">james@bond.com</TableCell>
-            <TableCell align="left">+370 65542 678</TableCell>
-            <TableCell align="left" sx={{ width: '30%' }}>entore harum aliquid ullam nostrum! Consequuntur facere iste qui quae ab aut.`</TableCell>
-            <TableCell align="left">
-              <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <Button variant='contained' color='warning'>Edit</Button>
-                <Button variant='contained' color='error'>Delete</Button>
-              </Box>
-            </TableCell>
-          </TableRow>
 
         </TableBody>
 
