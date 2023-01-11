@@ -10,8 +10,6 @@ import {
   Modal,
   Typography,
   FormControl,
-  InputLabel,
-  Input,
   TextField,
   Select,
   MenuItem
@@ -31,15 +29,15 @@ const ParticipantsTable = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    setOpen(true);
+    setOpen(!open);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(!open);
   };
 
   useEffect(() => {
-    fetch('http://localhost:3004/participants')
+    fetch('http://localhost:8000/participants')
       .then(response => response.json())
       .then(participant => setParticipants(participant));
   }, []);
@@ -68,7 +66,6 @@ const ParticipantsTable = () => {
           transform: 'translate(-50%, -50%)',
           backgroundColor: '#f6f6f6',
           borderRadius: '8px',
-          //border: '1px solid #000',
           height: 'fit-content',
           width: 400,
           boxShadow: 2,
@@ -97,12 +94,12 @@ const ParticipantsTable = () => {
           <FormControl sx={{ my: 1 }}>
             <Typography variant='body2'>Gender</Typography>
             <Select variant='standard'>
-              <MenuItem value="">
+              <MenuItem value="None">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value='male'>Male</MenuItem>
-              <MenuItem value='female'>Female</MenuItem>
-              <MenuItem value='other'>Other</MenuItem>
+              <MenuItem value='Male'>Male</MenuItem>
+              <MenuItem value='Female'>Female</MenuItem>
+              <MenuItem value='Other'>Other</MenuItem>
             </Select>
           </FormControl>
 
