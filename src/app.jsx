@@ -43,11 +43,23 @@ const App = () => {
   };
 
   const handleClose = () => {
+    setFullname('');
+    setGender('None');
+    setEmail('');
+    setPhone('');
+    setDescription('');
+
     setOpen(false);
   };
 
   const handleClickAway = (e) => {
     if (!e.target.classList.contains('MuiMenuItem-root')) {
+      setFullname('');
+      setGender('None');
+      setEmail('');
+      setPhone('');
+      setDescription('');
+
       setOpen(false);
     }
   };
@@ -65,9 +77,17 @@ const App = () => {
     setIsLoading(true);
 
     fetch('http://localhost:8000/participants', requestOptions)
-    .then(() => setIsLoading(false))
+    .then(() => {
+      setFullname('');
+      setGender('None');
+      setEmail('');
+      setPhone('');
+      setDescription('');
 
-    setOpen(!open);
+      setIsLoading(false);
+      setOpen(!open);
+    })
+
   };
 
   useEffect(() => {
