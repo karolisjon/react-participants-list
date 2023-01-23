@@ -37,12 +37,6 @@ const App = () => {
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchAllParticipants = () => {
-    fetch('http://localhost:8000/participants')
-      .then(response => response.json())
-      .then(participant => setParticipants(participant));
-  }
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -56,6 +50,12 @@ const App = () => {
 
     setOpen(false);
   };
+
+  const fetchAllParticipants = () => {
+    fetch('http://localhost:8000/participants')
+      .then(response => response.json())
+      .then(participant => setParticipants(participant));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,6 +83,22 @@ const App = () => {
 
     fetchAllParticipants();
   };
+
+  const handleUpdate = async (id) => {
+    setOpen(true);
+
+    const participantData = { fullname, gender, email, phone, description };
+
+    await fetch(`http://localhost:8000/participants/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(participantData),
+    })
+
+
+  }
 
   const handleDelete = async (id) => {
     await fetch(`http://localhost:8000/participants/${id}`, { method: 'DELETE' });
@@ -255,7 +271,7 @@ const App = () => {
                 <TableCell align="left" sx={{ width: '30%' }}>{description}</TableCell>
                 <TableCell align="left">
                   <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                    <Button variant='contained' color='warning'>Edit</Button>
+                    <Button variant='contained' color='warning' onClick={() => handleUpdate(id)}>Edit</Button>
                     <Button variant='contained' color='error' onClick={() => handleDelete(id)}>Delete</Button>
                   </Box>
                 </TableCell>
