@@ -18,6 +18,7 @@ import {
   AppBar,
   Toolbar,
 } from '@mui/material';
+//import ParticipantsTable from './components/participants-table';
 
 const tableColumns = [
   { id: 1, label: 'FULLNAME' },
@@ -37,6 +38,12 @@ const App = () => {
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const fetchAllParticipants = () => {
+    fetch('http://localhost:8000/participants')
+      .then(response => response.json())
+      .then(participant => setParticipants(participant));
+  }
 
   const handleOpen = () => {
     setOpen(!open);
@@ -77,24 +84,30 @@ const App = () => {
     setIsLoading(true);
 
     fetch('http://localhost:8000/participants', requestOptions)
-    .then(() => {
-      setFullname('');
-      setGender('None');
-      setEmail('');
-      setPhone('');
-      setDescription('');
+      .then(() => {
+        setFullname('');
+        setGender('None');
+        setEmail('');
+        setPhone('');
+        setDescription('');
 
-      setIsLoading(false);
-      setOpen(!open);
-    })
+        setIsLoading(false);
+        setOpen(!open);
+      })
 
+      fetchAllParticipants();
   };
 
+  const handleDelete = async (id) => {
+    await fetch(`http://localhost:8000/participants/${id}`, { method: 'DELETE' });
+    fetchAllParticipants();
+  }
+
   useEffect(() => {
-    fetch('http://localhost:8000/participants')
-      .then(response => response.json())
-      .then(participant => setParticipants(participant));
-  }, [participants]);
+    (async () => {
+      fetchAllParticipants();
+    })();
+  }, []);
 
   return (
     <Container>
@@ -137,8 +150,7 @@ const App = () => {
               height: 'fit-content',
               width: 400,
               boxShadow: 2,
-            }}
-          >
+            }}>
             <form
               onSubmit={handleSubmit}
               style={{
@@ -209,7 +221,7 @@ const App = () => {
                 />
               </FormControl>
 
-              { !isLoading && <Button
+              {!isLoading && <Button
                 variant='contained'
                 type='submit'
                 sx={{
@@ -218,7 +230,7 @@ const App = () => {
                 Add participant
               </Button>}
 
-              { isLoading && <Button
+              {isLoading && <Button
                 variant='contained'
                 type='submit'
                 disabled
@@ -230,6 +242,7 @@ const App = () => {
 
             </form>
           </Modal>
+
         </Box>
       </ClickAwayListener>
 
@@ -251,8 +264,8 @@ const App = () => {
               email,
               phone,
               description
-            }) => (
-              <TableRow key={id}>
+            }, i) => (
+              <TableRow key={i}>
                 <TableCell>{fullname}</TableCell>
                 <TableCell align="left">{gender}</TableCell>
                 <TableCell align="left">{email}</TableCell>
@@ -261,7 +274,7 @@ const App = () => {
                 <TableCell align="left">
                   <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
                     <Button variant='contained' color='warning'>Edit</Button>
-                    <Button variant='contained' color='error'>Delete</Button>
+                    <Button variant='contained' color='error' onClick={() => handleDelete(id)}>Delete</Button>
                   </Box>
                 </TableCell>
               </TableRow>
@@ -269,6 +282,10 @@ const App = () => {
           }
         </TableBody>
       </Table>
+
+      {/* <ParticipantsTable
+        participants={participants}
+      /> */}
     </Container>
   );
 }
