@@ -14,11 +14,9 @@ import {
   TextField,
   Select,
   MenuItem,
-  ClickAwayListener,
   AppBar,
   Toolbar,
 } from '@mui/material';
-//import ParticipantsTable from './components/participants-table';
 
 const tableColumns = [
   { id: 1, label: 'FULLNAME' },
@@ -46,7 +44,7 @@ const App = () => {
   }
 
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -57,18 +55,6 @@ const App = () => {
     setDescription('');
 
     setOpen(false);
-  };
-
-  const handleClickAway = (e) => {
-    if (!e.target.classList.contains('MuiMenuItem-root')) {
-      setFullname('');
-      setGender('None');
-      setEmail('');
-      setPhone('');
-      setDescription('');
-
-      setOpen(false);
-    }
   };
 
   const handleSubmit = (e) => {
@@ -95,7 +81,7 @@ const App = () => {
         setOpen(!open);
       })
 
-      fetchAllParticipants();
+    fetchAllParticipants();
   };
 
   const handleDelete = async (id) => {
@@ -119,38 +105,36 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <ClickAwayListener
-        onClickAway={handleClickAway}
-      >
-        <Box sx={{ marginTop: '80px' }}>
-          <Button
-            sx={{
-              borderRadius: '8px',
-              backgroundColor: '#fff',
-              color: '#091fbb',
-              border: '1px solid #091fbb'
-            }}
-            onClick={handleOpen}
-          >
-            Add new
-          </Button>
-
-          <Modal
-            hideBackdrop
-            open={open}
-            onClose={handleClose}
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: '#fff',
-              border: '1px solid #b9c2ff',
-              borderRadius: '8px',
-              height: 'fit-content',
-              width: 400,
-              boxShadow: 2,
-            }}>
+      <Box sx={{ marginTop: '80px' }}>
+        <Button
+          sx={{
+            borderRadius: '8px',
+            backgroundColor: '#fff',
+            color: '#091fbb',
+            border: '1px solid #091fbb'
+          }}
+          onClick={handleOpen}
+        >
+          Add new
+        </Button>
+        <Modal
+          hideBackdrop
+          open={open}
+          onClose={handleClose}
+          slotProps={{ backdrop: { sx: { background: 'transparent' } } }}
+        >
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#fff',
+            border: '1px solid #b9c2ff',
+            borderRadius: '8px',
+            height: 'fit-content',
+            width: 400,
+            boxShadow: 2,
+          }}>
             <form
               onSubmit={handleSubmit}
               style={{
@@ -239,12 +223,10 @@ const App = () => {
                 }}>
                 Adding participant...
               </Button>}
-
             </form>
-          </Modal>
-
-        </Box>
-      </ClickAwayListener>
+          </Box>
+        </Modal>
+      </Box>
 
       <Table>
         <TableHead>
@@ -282,11 +264,7 @@ const App = () => {
           }
         </TableBody>
       </Table>
-
-      {/* <ParticipantsTable
-        participants={participants}
-      /> */}
-    </Container>
+    </Container >
   );
 }
 
