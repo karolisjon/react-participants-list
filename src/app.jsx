@@ -84,20 +84,18 @@ const App = () => {
     fetchAllParticipants();
   };
 
-  const handleUpdate = async (id) => {
+  const onEdit = async (id) => {
     setOpen(true);
 
-    const participantData = { fullname, gender, email, phone, description };
-
-    await fetch(`http://localhost:8000/participants/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(participantData),
-    })
-
-
+    await fetch(`http://localhost:8000/participants/${id}`)
+    .then(res => res.json())
+    .then(({ fullname, gender, email, phone, description }) => {
+      setFullname(fullname);
+      setGender(gender);
+      setEmail(email);
+      setPhone(phone);
+      setDescription(description);
+    });
   }
 
   const handleDelete = async (id) => {
@@ -262,8 +260,8 @@ const App = () => {
               email,
               phone,
               description
-            }, i) => (
-              <TableRow key={i}>
+            }) => (
+              <TableRow key={id} id={id}>
                 <TableCell>{fullname}</TableCell>
                 <TableCell align="left">{gender}</TableCell>
                 <TableCell align="left">{email}</TableCell>
@@ -271,7 +269,7 @@ const App = () => {
                 <TableCell align="left" sx={{ width: '30%' }}>{description}</TableCell>
                 <TableCell align="left">
                   <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                    <Button variant='contained' color='warning' onClick={() => handleUpdate(id)}>Edit</Button>
+                    <Button variant='contained' color='warning' onClick={() => onEdit(id)}>Edit</Button>
                     <Button variant='contained' color='error' onClick={() => handleDelete(id)}>Delete</Button>
                   </Box>
                 </TableCell>
