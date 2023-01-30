@@ -36,6 +36,7 @@ const App = () => {
   const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [editableParticipant, setEditableParticipant] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -86,16 +87,17 @@ const App = () => {
 
   const onEdit = async (id) => {
     setOpen(true);
+    setEditableParticipant(true);
 
     await fetch(`http://localhost:8000/participants/${id}`)
-    .then(res => res.json())
-    .then(({ fullname, gender, email, phone, description }) => {
-      setFullname(fullname);
-      setGender(gender);
-      setEmail(email);
-      setPhone(phone);
-      setDescription(description);
-    });
+      .then(res => res.json())
+      .then(({ fullname, gender, email, phone, description }) => {
+        setFullname(fullname);
+        setGender(gender);
+        setEmail(email);
+        setPhone(phone);
+        setDescription(description);
+      });
   }
 
   const handleDelete = async (id) => {
@@ -104,9 +106,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    (async () => {
-      fetchAllParticipants();
-    })();
+    fetchAllParticipants();
   }, []);
 
   return (
@@ -160,7 +160,10 @@ const App = () => {
                 paddingBottom: '30px',
               }}
             >
-              <Typography variant='h6' sx={{ my: 2, textAlign: 'center' }}>ADD NEW PARTICIPANT</Typography>
+              {!editableParticipant
+                ? <Typography variant='h6' sx={{ my: 2, textAlign: 'center' }}>ADD NEW PARTICIPANT</Typography>
+                : <Typography variant='h6' sx={{ my: 2, textAlign: 'center' }}>EDIT PARTICIPANT</Typography>
+              }
 
               <FormControl sx={{ my: 1 }}>
                 <Typography variant='body2'>Fullname</Typography>
@@ -219,24 +222,24 @@ const App = () => {
                 />
               </FormControl>
 
-              {!isLoading && <Button
-                variant='contained'
-                type='submit'
-                sx={{
-                  backgroundColor: '#091fbb'
-                }}>
-                Add participant
-              </Button>}
+              {!editableParticipant
+                ? <Button
+                  variant='contained'
+                  type='submit'
+                  sx={{
+                    backgroundColor: '#091fbb'
+                  }}>
+                  Add participant
+                </Button>
 
-              {isLoading && <Button
-                variant='contained'
-                type='submit'
-                disabled
-                sx={{
-                  backgroundColor: '#091fbb'
-                }}>
-                Adding participant...
-              </Button>}
+                : <Button
+                  variant='contained'
+                  type='submit'
+                  color='warning'
+                >
+                  Edit participant
+                </Button>
+              }
             </form>
           </Box>
         </Modal>
